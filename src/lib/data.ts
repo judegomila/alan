@@ -4,9 +4,11 @@ import { z } from "zod";
 import {
   AvenueSchema,
   ClusterStateSchema,
+  MissionSchema,
   PartSchema,
   PhaseSchema,
   PowerConfigSchema,
+  WorkloadSchema,
 } from "./schemas";
 
 function loadJson<S extends z.ZodTypeAny>(file: string, schema: S): z.infer<S> {
@@ -23,3 +25,5 @@ export const getParts = () => loadJson("bom.json", z.array(PartSchema));
 export const getPowerConfig = () => loadJson("power.json", PowerConfigSchema);
 export const getAvenues = () => loadJson("avenues.json", z.array(AvenueSchema));
 export const getClusterState = () => loadJson("cluster-state.json", ClusterStateSchema);
+export const getMission = () => loadJson("mission.json", MissionSchema);
+export const getWorkloads = () => loadJson("workloads.json", z.array(WorkloadSchema));

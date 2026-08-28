@@ -1,0 +1,33 @@
+{
+  "zetaExplorerUrl": "https://zetaexplorer.vercel.app/",
+  "routes": {
+    "total": 560,
+    "substantive": 120,
+    "deepFraction": 0.33,
+    "numericsRoutes": 30
+  },
+  "tokensPerRouteM": {
+    "breadth": 10,
+    "deep": 75,
+    "frontierReview": 1.5
+  },
+  "fp64": {
+    "gpuHoursPerRoute": 800,
+    "cloudUsdPerGpuHour": 1.5,
+    "v100Gpus": 8,
+    "v100PowerKw": 3.0
+  },
+  "pricingUsdPerMTok": {
+    "fable5": 50,
+    "opus5Batch": 12.5,
+    "gpt56Sol": 30,
+    "openCloud": 1.0
+  },
+  "electricityUsdPerKwh": 0.2,
+  "clusterPowerKw": 4.3,
+  "throughputMTokPerDay": {
+    "phase0": 25,
+    "full": 80,
+    "v100Box": 30
+  }
+}

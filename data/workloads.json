@@ -1,0 +1,53 @@
+[
+  {
+    "id": "verified-numerics",
+    "title": "Verified numerics (FP64)",
+    "zetaSections": [
+      "H_t Corridor Certificates (rigorous)",
+      "Improving Bounds on Λ",
+      "Zero Departure (exact de Bruijn flow)",
+      "Mollified Barrier Certificate",
+      "Rigorous Numerics (§20)"
+    ],
+    "hardware": "8x V100 SXM2 box (62 TFLOPS FP64) + EPYC cores running arb/MPFR interval arithmetic",
+    "why": "Certificate campaigns are interval arithmetic and FP64, not LLM inference. Gaming Ampere is FP64-crippled (0.55 TFLOPS per 3090 — the whole 12-GPU fleet is ~6.6); one used $6k V100 SXM2 server delivers 10x that. CPU core count matters here too."
+  },
+  {
+    "id": "lean-proof-search",
+    "title": "Lean proof search",
+    "zetaSections": [
+      "Lean Formalization Status",
+      "Formal Proof",
+      "Proof Checker",
+      "Formalization Review Dashboard"
+    ],
+    "hardware": "3090 fleet batching 8-32B models via vLLM + EPYC cores running the Lean kernel",
+    "why": "Millions of candidate tactics per day, each machine-checked by the Lean kernel — hallucination-proof by construction and embarrassingly parallel. Exactly the workload that costs ~$0.50/M tokens locally vs $20-50/M at the frontier. The killer app for a local 24/7 cluster."
+  },
+  {
+    "id": "route-exhaustion",
+    "title": "Route exhaustion & conjecture mining",
+    "zetaSections": [
+      "Cross-Attack",
+      "PCC Route Exhaustion",
+      "Flow-Blindness No-Go",
+      "GUE vs Zeros",
+      "Local Angular-Spacing Statistics"
+    ],
+    "hardware": "3090 fleet (288 GB) running 400B-class open MoE reasoning models at Q4",
+    "why": "Wide, cheap, continuous generation and filtering across all routes. Volume matters more than per-token brilliance; survivors get promoted to the rigor layer. Negative results (route-killing) are a product, not a failure."
+  },
+  {
+    "id": "rigor-layer",
+    "title": "The rigor layer",
+    "zetaSections": [
+      "Proof Planner",
+      "RH Dependency DAG",
+      "Rigor Dashboard",
+      "Paper Review + Audit Ledger",
+      "The RH Obstruction Seam"
+    ],
+    "hardware": "Frontier API — Claude Fable 5 for the hardest steps, Opus 5 batch for mid-tier review",
+    "why": "Proof-direction decisions and §-level audits need the highest available intelligence, but at low volume: hundreds of deep calls a day, not millions. Budget-capped at a few hundred to ~$2k/month. The cluster's findings feed up; only survivors cost frontier tokens."
+  }
+]

@@ -85,6 +85,50 @@ export const ClusterStateSchema = z.object({
   ),
 });
 
+export const WorkloadSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  zetaSections: z.array(z.string()),
+  hardware: z.string(),
+  why: z.string(),
+});
+
+export const MissionSchema = z.object({
+  zetaExplorerUrl: z.string().url(),
+  routes: z.object({
+    total: z.number().int().positive(),
+    substantive: z.number().int().positive(),
+    deepFraction: z.number().min(0).max(1),
+    numericsRoutes: z.number().int().nonnegative(),
+  }),
+  tokensPerRouteM: z.object({
+    breadth: z.number().positive(),
+    deep: z.number().positive(),
+    frontierReview: z.number().positive(),
+  }),
+  fp64: z.object({
+    gpuHoursPerRoute: z.number().positive(),
+    cloudUsdPerGpuHour: z.number().positive(),
+    v100Gpus: z.number().int().positive(),
+    v100PowerKw: z.number().positive(),
+  }),
+  pricingUsdPerMTok: z.object({
+    fable5: z.number().positive(),
+    opus5Batch: z.number().positive(),
+    gpt56Sol: z.number().positive(),
+    openCloud: z.number().positive(),
+  }),
+  electricityUsdPerKwh: z.number().positive(),
+  clusterPowerKw: z.number().positive(),
+  throughputMTokPerDay: z.object({
+    phase0: z.number().positive(),
+    full: z.number().positive(),
+    v100Box: z.number().positive(),
+  }),
+});
+
+export type Workload = z.infer<typeof WorkloadSchema>;
+export type Mission = z.infer<typeof MissionSchema>;
 export type Phase = z.infer<typeof PhaseSchema>;
 export type GpuMeta = z.infer<typeof GpuMetaSchema>;
 export type Part = z.infer<typeof PartSchema>;
