@@ -1,9 +1,11 @@
 import { BomTable } from "@/components/BomTable";
 import { PowerCalculator } from "@/components/PowerCalculator";
+import { RigViewer } from "@/components/RigViewer";
 import { Section } from "@/components/Section";
 import { StatCard } from "@/components/StatCard";
 import { StatusPill } from "@/components/StatusPill";
 import { getParts, getPhases, getPowerConfig } from "@/lib/data";
+import { wattsToBtuHr } from "@/lib/power";
 import { estTokensPerSec, machineStats, modelClassFor, partsForPhases } from "@/lib/stats";
 
 export const metadata = { title: "The Machine — ALAN" };
@@ -22,10 +24,23 @@ export default function MachinePage() {
     maxCount: p.qty * 2,
   }));
   const allStats = machineStats(parts, power);
+  const nodeCount = Math.max(1, allStats.nodeCount);
+  const perNode = Math.ceil(allStats.gpuCount / nodeCount);
+  const gpusPerNode = Array.from({ length: nodeCount }, (_, i) =>
+    Math.max(0, Math.min(perNode, allStats.gpuCount - i * perNode))
+  );
 
   return (
     <div>
       <h1 className="mb-8 text-3xl font-bold text-zinc-100">The Machine</h1>
+
+      <Section title="The rig">
+        <p className="mb-4 max-w-2xl text-sm text-zinc-400">
+          The full plan: {nodeCount} open-air nodes, {allStats.gpuCount} GPUs hanging off the top
+          rails, mining-frame style. Drag to orbit.
+        </p>
+        <RigViewer gpusPerNode={gpusPerNode} />
+      </Section>
 
       <Section title="Power budget">
         <p className="mb-4 max-w-2xl text-sm text-zinc-400">
@@ -135,8 +150,33 @@ export default function MachinePage() {
         </div>
       </Section>
 
-      <Section title="Thermals">
-        <ul className="list-disc space-y-1 pl-5 text-sm text-zinc-400">
+      <Section title="Thermal design (DIY mode)">
+        <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+          <StatCard
+            label="Heat @ full plan"
+            value={`${wattsToBtuHr(allStats.worstCasePowerW).toLocaleString()} BTU/hr`}
+            sub={`${(allStats.worstCasePowerW / 1000).toFixed(1)} kW of pure heat`}
+          />
+          <StatCard
+            label="Heat @ envelope"
+            value={`${wattsToBtuHr(power.envelopeW).toLocaleString()} BTU/hr`}
+            sub={`${(power.envelopeW / 1000).toFixed(0)} kW ceiling ≈ 3-ton AC load`}
+          />
+          <StatCard
+            label="Space-heater eq."
+            value={`${(allStats.worstCasePowerW / 1500).toFixed(1)}×`}
+            sub="1.5 kW heaters running flat out"
+          />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {power.thermalDesign.map((t) => (
+            <div key={t.title} className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-5">
+              <h3 className="mb-1 font-bold text-zinc-100">{t.title}</h3>
+              <p className="text-sm leading-relaxed text-zinc-400">{t.body}</p>
+            </div>
+          ))}
+        </div>
+        <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-zinc-400">
           {power.thermalNotes.map((n) => (
             <li key={n}>{n}</li>
           ))}

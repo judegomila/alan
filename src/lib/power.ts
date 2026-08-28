@@ -20,3 +20,7 @@ export function systemPowerW(
 export function headroomW(envelopeW: number, drawW: number): number {
   return envelopeW - drawW;
 }
+
+export function wattsToBtuHr(watts: number): number {
+  return Math.round(watts * 3.412);
+}

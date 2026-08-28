@@ -13,6 +13,7 @@ export function BomTable({ parts }: { parts: Part[] }) {
             <th className="px-4 py-3">Target $</th>
             <th className="px-4 py-3">Paid $</th>
             <th className="px-4 py-3">Status</th>
+            <th className="px-4 py-3">Deals</th>
           </tr>
         </thead>
         <tbody>
@@ -28,6 +29,20 @@ export function BomTable({ parts }: { parts: Part[] }) {
                 {p.paidPriceUsd !== null ? p.paidPriceUsd.toLocaleString() : "—"}
               </td>
               <td className="px-4 py-3"><StatusPill status={p.status} /></td>
+              <td className="px-4 py-3">
+                {p.link ? (
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="whitespace-nowrap font-mono text-xs text-amber-400 hover:underline"
+                  >
+                    eBay ↗
+                  </a>
+                ) : (
+                  <span className="text-zinc-600">—</span>
+                )}
+              </td>
             </tr>
           ))}
           <tr className="border-t border-zinc-700 bg-zinc-900/50">
@@ -35,6 +50,7 @@ export function BomTable({ parts }: { parts: Part[] }) {
             <td />
             <td />
             <td className="px-4 py-3 font-mono font-bold text-amber-400">${total.toLocaleString()}</td>
+            <td />
             <td />
           </tr>
         </tbody>

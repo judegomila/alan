@@ -1,16 +1,43 @@
 {
-  "envelopeW": 5000,
+  "envelopeW": 10000,
   "nodeOverheadW": 350,
   "coolingOverheadW": 200,
   "notes": [
-    "Envelope is 5 kW continuous: normal home service backed by 5 kW solar + battery.",
+    "Envelope is 10 kW continuous, fed by dedicated 240 V circuits — one 60 A circuit safely delivers 11.5 kW continuous (NEC 80% rule), the same class as a big EV charger. Never spread this load across ordinary 120 V wall outlets.",
+    "5 kW solar + battery covers roughly half the worst case; the battery smooths inference bursts and the grid takes the rest.",
     "GPUs run power-limited (nvidia-smi -pl): 3090 at 250 W loses ~4% throughput for ~30% less power.",
-    "If a phase needs more than the envelope, the machine moves to an industrial location — that is a planned exit, not a failure.",
-    "Battery smooths inference bursts; sustained draw is sized to solar + grid headroom."
+    "PSUs run on 240 V — 2-3% better efficiency than 120 V and half the current per conductor.",
+    "If a phase needs more than the envelope, the machine moves to an industrial location — that is a planned exit, not a failure."
   ],
   "thermalNotes": [
     "Open-air frames, no cases: ambient extraction is the owner's home turf.",
     "Used 3090s get fresh thermal pads on VRAM before entering service.",
     "Exhaust heat is a feature in winter, a ducting problem in summer — duct design owned outside this app."
+  ],
+  "thermalDesign": [
+    {
+      "title": "Heat budget = power budget",
+      "body": "Every watt in is a watt of heat out. The full 12-GPU plan at ~4.3 kW is ~14,600 BTU/hr — more heat than a large window AC can remove. At the 10 kW envelope ceiling it is ~34,000 BTU/hr, close to a 3-ton central AC. Extraction is designed for worst case, not average."
+    },
+    {
+      "title": "Open-air frames",
+      "body": "No closed cases anywhere. Open mining-style frames drop GPU hotspot temps 10-15°C versus chassis-bound cards, cost ~$80, and make every component serviceable in seconds."
+    },
+    {
+      "title": "Power-limited silicon",
+      "body": "3090s capped at 250 W shed ~30% of their heat for ~4% throughput loss — the single highest-leverage thermal decision in the build. GDDR6X junction temperature is the binding constraint, not core temp."
+    },
+    {
+      "title": "Repad used cards",
+      "body": "Mining-era 3090s arrive with cooked VRAM thermal pads and will throttle above 100°C junction. Every used card gets fresh pads on VRAM and VRMs before entering service."
+    },
+    {
+      "title": "Seasonal ducting",
+      "body": "Winter: exhaust ducts into living space — 4 kW of free heating credits the power budget. Summer: insulated duct straight outdoors with a booster fan; intake pulls from the coolest side of the building."
+    },
+    {
+      "title": "Instrumented, not hoped",
+      "body": "nvidia-smi GPU/junction temps and IPMI board sensors stream to mission control. Thermal alarms pause the job queue before hardware ever sees a critical temp."
+    }
   ]
 }
