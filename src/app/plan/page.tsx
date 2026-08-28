@@ -1,15 +1,17 @@
 import { MissionCalculator } from "@/components/MissionCalculator";
 import { Section } from "@/components/Section";
 import { StatCard } from "@/components/StatCard";
-import { getMission, getWorkloads } from "@/lib/data";
+import { getMission, getParts, getPowerConfig, getWorkloads } from "@/lib/data";
 import {
   alanElectricityUsd,
+  buildVsRent,
   costUsd,
   fp64Campaign,
   frontierReviewTokensM,
   searchTokensM,
   sweepDays,
 } from "@/lib/mission";
+import { machineStats } from "@/lib/stats";
 
 export const metadata = { title: "Mission Plan — ALAN" };
 
@@ -28,6 +30,8 @@ export default function PlanPage() {
   const daysCombined = sweepDays(tokensM, combined);
   const fp64 = fp64Campaign(mission.routes, mission.fp64, mission.electricityUsdPerKwh);
   const p = mission.pricingUsdPerMTok;
+  const bomCapex = machineStats(getParts(), getPowerConfig()).plannedCostUsd;
+  const bvr = buildVsRent(mission, bomCapex);
 
   return (
     <div>
@@ -102,6 +106,62 @@ export default function PlanPage() {
 
       <Section title="Explore the economics">
         <MissionCalculator mission={mission} />
+      </Section>
+
+      <Section title="Build vs rent — the cost delta">
+        <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <StatCard
+            label="ALAN capex"
+            value={usd(bvr.capexUsd)}
+            sub={`full BOM ${usd(bomCapex)} + V100 box ${usd(mission.fp64.v100BoxUsd)}`}
+          />
+          <StatCard
+            label="Sweep electricity"
+            value={usd(bvr.electricityUsd)}
+            sub="LLM sweep + FP64 campaign"
+          />
+          <StatCard label="ALAN all-in" value={usd(bvr.alanAllInUsd)} sub="machine included" />
+          <StatCard
+            label="Best-case saving"
+            value={usd(bvr.scenarios[0].deltaUsd)}
+            sub="vs frontier-quality cloud"
+          />
+        </div>
+        <div className="overflow-x-auto rounded-lg border border-zinc-800">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-zinc-900 text-xs uppercase tracking-wider text-zinc-500">
+              <tr>
+                <th className="px-4 py-3">Same sweep bought on cloud (tokens + FP64 rental)</th>
+                <th className="px-4 py-3">Cloud cost</th>
+                <th className="px-4 py-3">Delta vs ALAN all-in</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bvr.scenarios.map((s) => (
+                <tr key={s.id} className="border-t border-zinc-800/60">
+                  <td className="px-4 py-3 text-zinc-300">{s.label}</td>
+                  <td className="px-4 py-3 font-mono text-zinc-100">{usd(s.cloudUsd)}</td>
+                  <td
+                    className={`px-4 py-3 font-mono font-bold ${
+                      s.deltaUsd > 0 ? "text-emerald-400" : "text-red-400"
+                    }`}
+                  >
+                    {s.deltaUsd > 0 ? `ALAN saves ${usd(s.deltaUsd)}` : `cloud saves ${usd(-s.deltaUsd)}`}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-4 max-w-2xl text-sm text-zinc-400">
+          Every scenario includes the {usd(fp64.cloudUsd)} FP64 rental on the cloud side, and the
+          frontier review layer is excluded because it is paid identically in both worlds. Even in
+          the most cloud-favorable case, ALAN pays for itself — hardware included — inside the
+          first sweep. On token work alone (no FP64 campaign), break-even arrives after ~
+          {Math.ceil(bvr.tokenBreakEvenSweeps)} sweeps; and a sweep is never one-and-done — each
+          rerun from the improvement queue costs the cloud price again, but only ~
+          {usd(bvr.sweepElectricityUsd)} of electricity on ALAN.
+        </p>
       </Section>
 
       <Section title="The FP64 certificate campaign">

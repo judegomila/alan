@@ -111,6 +111,7 @@ export const MissionSchema = z.object({
     cloudUsdPerGpuHour: z.number().positive(),
     v100Gpus: z.number().int().positive(),
     v100PowerKw: z.number().positive(),
+    v100BoxUsd: z.number().positive(),
   }),
   pricingUsdPerMTok: z.object({
     fable5: z.number().positive(),
