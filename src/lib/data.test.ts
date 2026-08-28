@@ -12,7 +12,7 @@ describe("data loaders", () => {
   it("loads and validates all seed data files", () => {
     expect(getPhases().length).toBeGreaterThanOrEqual(3);
     expect(getParts().length).toBeGreaterThan(0);
-    expect(getPowerConfig().envelopeW).toBe(5000);
+    expect(getPowerConfig().envelopeW).toBe(10000);
     expect(getAvenues().length).toBeGreaterThanOrEqual(5);
     expect(getClusterState().online).toBe(false);
   });

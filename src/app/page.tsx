@@ -28,7 +28,8 @@ export default function Home() {
           conjecture mining — in tight human/AI collaboration.
         </p>
         <p>
-          It runs on a ~5 kW home power envelope (solar + battery), scales in phases where each
+          It runs on a 10 kW home power envelope (dedicated 240 V circuits, 5 kW solar + battery
+          behind it), scales in phases where each
           phase must earn the next, and everything about it — the parts list, the power budget, the
           research avenues — lives in the open in this site&apos;s repo.
         </p>

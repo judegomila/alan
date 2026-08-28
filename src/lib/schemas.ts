@@ -49,6 +49,7 @@ export const PowerConfigSchema = z.object({
   coolingOverheadW: z.number().nonnegative(),
   notes: z.array(z.string()),
   thermalNotes: z.array(z.string()),
+  thermalDesign: z.array(z.object({ title: z.string(), body: z.string() })),
 });
 
 export const AvenueSchema = z.object({

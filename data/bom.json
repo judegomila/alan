@@ -2,13 +2,14 @@
   {
     "id": "p0-cpu",
     "phaseId": "phase-0",
-    "name": "AMD EPYC 7402 (24c/48t, used)",
+    "name": "AMD EPYC 7402P (24c/48t, used)",
     "category": "cpu",
     "qty": 1,
-    "targetPriceUsd": 250,
+    "targetPriceUsd": 90,
     "paidPriceUsd": null,
     "status": "researching",
-    "notes": "Rome, 128 PCIe 4.0 lanes — one x16 per GPU, no bifurcation games."
+    "notes": "Rome, 128 PCIe 4.0 lanes — one x16 per GPU. P-suffix (single-socket) is fine on H12SSL-i and dirt cheap: $50-90 on eBay as of Aug 2026.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=amd+epyc+7402p&LH_BIN=1&_udhi=120&_sop=15"
   },
   {
     "id": "p0-mobo",
@@ -19,7 +20,8 @@
     "targetPriceUsd": 520,
     "paidPriceUsd": null,
     "status": "researching",
-    "notes": "5x PCIe 4.0 x16 slots, IPMI for headless management."
+    "notes": "5x PCIe 4.0 x16 slots, IPMI for headless management. CPU+board combo listings often beat buying separately.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=supermicro+h12ssl-i&LH_BIN=1&_udhi=620&_sop=15"
   },
   {
     "id": "p0-ram",
@@ -30,7 +32,8 @@
     "targetPriceUsd": 400,
     "paidPriceUsd": null,
     "status": "researching",
-    "notes": "One DIMM per channel; room to double later."
+    "notes": "One DIMM per channel; room to double later. Link searches per-stick (~$45-55 each is a deal).",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=32gb+ddr4+3200+ecc+rdimm&LH_BIN=1&_udhi=60&_sop=15"
   },
   {
     "id": "p0-gpu-3090",
@@ -38,10 +41,11 @@
     "name": "NVIDIA RTX 3090 24 GB (used)",
     "category": "gpu",
     "qty": 4,
-    "targetPriceUsd": 750,
+    "targetPriceUsd": 900,
     "paidPriceUsd": null,
     "status": "watching",
-    "notes": "eBay sweet spot. Repad if mining-era. Power-limit to 250 W: ~4% perf loss, ~30% power saved.",
+    "notes": "Market average ~$950-1,050 (Aug 2026); under $900 shipped is a deal. Repad if mining-era. Power-limit to 250 W: ~4% perf loss, ~30% power saved.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=nvidia+rtx+3090+24gb&LH_BIN=1&_udlo=500&_udhi=950&_sop=15",
     "gpu": {
       "vramGb": 24,
       "fp16Tflops": 35.6,
@@ -58,7 +62,8 @@
     "qty": 1,
     "targetPriceUsd": 110,
     "paidPriceUsd": null,
-    "status": "researching"
+    "status": "researching",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=2tb+nvme+ssd&LH_BIN=1&_udhi=120&_sop=15"
   },
   {
     "id": "p0-psu",
@@ -69,7 +74,8 @@
     "targetPriceUsd": 180,
     "paidPriceUsd": null,
     "status": "researching",
-    "notes": "Two supplies: 2 GPUs each; add2psu-style sync board."
+    "notes": "Two supplies: 2 GPUs each; add2psu-style sync board. Runs on 240 V for better efficiency.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=evga+supernova+1600&LH_BIN=1&_udhi=220&_sop=15"
   },
   {
     "id": "p0-frame",
@@ -80,7 +86,8 @@
     "targetPriceUsd": 80,
     "paidPriceUsd": null,
     "status": "researching",
-    "notes": "Open frame maximizes the thermal advantage we already have."
+    "notes": "Open frame maximizes the thermal advantage we already have.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=open+air+mining+rig+frame&LH_BIN=1&_udhi=90&_sop=15"
   },
   {
     "id": "p1-gpu-3090",
@@ -88,9 +95,11 @@
     "name": "NVIDIA RTX 3090 24 GB (used)",
     "category": "gpu",
     "qty": 8,
-    "targetPriceUsd": 750,
+    "targetPriceUsd": 900,
     "paidPriceUsd": null,
     "status": "researching",
+    "notes": "Watch for multi-card lots from mining liquidations — often 10-15% under singles.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=nvidia+rtx+3090+24gb&LH_BIN=1&_udlo=500&_udhi=950&_sop=15",
     "gpu": {
       "vramGb": 24,
       "fp16Tflops": 35.6,
@@ -102,13 +111,14 @@
   {
     "id": "p1-node-kit",
     "phaseId": "phase-1",
-    "name": "EPYC node kit x2 (7402 + H12SSL-i + 256 GB + NVMe + PSUs)",
+    "name": "EPYC node kit x2 (7402P + H12SSL-i + 256 GB + NVMe + PSUs)",
     "category": "motherboard",
     "qty": 2,
-    "targetPriceUsd": 1700,
+    "targetPriceUsd": 1300,
     "paidPriceUsd": null,
     "status": "researching",
-    "notes": "Repeat the Phase 0 node recipe twice."
+    "notes": "CPU+board combos run ~$1,250-1,480 with some RAM included (Aug 2026). Repeat the Phase 0 node recipe.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=epyc+7402p+h12ssl-i&LH_BIN=1&_udhi=1300&_sop=15"
   },
   {
     "id": "p1-nics",
@@ -119,7 +129,8 @@
     "targetPriceUsd": 150,
     "paidPriceUsd": null,
     "status": "researching",
-    "notes": "eBay gold: ~$30/NIC. RDMA-capable for tensor parallel."
+    "notes": "eBay gold: ~$30/NIC. RDMA-capable for tensor parallel.",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=mellanox+connectx-4+lx+25gbe&LH_BIN=1&_udhi=60&_sop=15"
   },
   {
     "id": "p1-switch",
@@ -129,6 +140,7 @@
     "qty": 1,
     "targetPriceUsd": 500,
     "paidPriceUsd": null,
-    "status": "researching"
+    "status": "researching",
+    "link": "https://www.ebay.com/sch/i.html?_nkw=mikrotik+25g+switch&LH_BIN=1&_udhi=650&_sop=15"
   }
 ]

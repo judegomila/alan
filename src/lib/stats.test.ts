@@ -24,7 +24,8 @@ const parts: Part[] = [
 ];
 
 const power: PowerConfig = {
-  envelopeW: 5000, nodeOverheadW: 350, coolingOverheadW: 200, notes: [], thermalNotes: [],
+  envelopeW: 10000, nodeOverheadW: 350, coolingOverheadW: 200, notes: [], thermalNotes: [],
+  thermalDesign: [],
 };
 
 describe("machineStats", () => {

@@ -11,8 +11,9 @@ This repo is both the machine's design document and its public site (Next.js on 
 ## The idea
 
 - **Phased:** ~$8k seed node → ~$20k three-node cluster → evidence-gated heavy phase.
-- **Used parts:** RTX 3090s at ~$750/24 GB are the best $/VRAM available.
-- **5 kW envelope:** home solar + battery; GPUs power-limited; industrial site if outgrown.
+- **Used parts:** RTX 3090s at ~$900/24 GB are the best $/VRAM available.
+- **10 kW envelope:** dedicated 240 V circuits with 5 kW solar + battery behind them;
+  GPUs power-limited; industrial site if outgrown.
 - **Portfolio research:** operator searches, positivity criteria, large-scale numerics,
   conjecture mining — avenues promoted or killed on evidence.
 

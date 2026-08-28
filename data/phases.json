@@ -41,7 +41,7 @@
     "summary": "Decision gate: used A100/6000-Ada class vs more 3090s vs next-gen. Industrial site if power demands it.",
     "goals": [
       "Pick hardware class from Phase 1 evidence, not speculation",
-      "If over the 5 kW envelope, execute the industrial-location move",
+      "If over the 10 kW envelope, execute the industrial-location move",
       "Dedicated long-context model for proof-drafting and verification"
     ],
     "exitCriteria": [
