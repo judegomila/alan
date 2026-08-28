@@ -15,7 +15,8 @@
     "gpuHoursPerRoute": 800,
     "cloudUsdPerGpuHour": 1.5,
     "v100Gpus": 8,
-    "v100PowerKw": 3.0
+    "v100PowerKw": 3.0,
+    "v100BoxUsd": 6000
   },
   "pricingUsdPerMTok": {
     "fable5": 50,
