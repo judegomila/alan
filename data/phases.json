@@ -1,0 +1,52 @@
+[
+  {
+    "id": "phase-0",
+    "name": "Seed",
+    "budgetUsd": 8000,
+    "status": "active",
+    "summary": "One EPYC node, 4x used RTX 3090. Prove the human/AI research loop end to end.",
+    "goals": [
+      "96 GB VRAM online: quantized 70B-class models plus parallel 8-32B searchers",
+      "Local inference server (vLLM / llama.cpp) with an orchestration queue",
+      "First three RH avenues running nightly experiments"
+    ],
+    "exitCriteria": [
+      "One avenue produces a result worth writing up (positive or negative)",
+      "Cluster runs a 72-hour unattended experiment without intervention",
+      "Cost per useful experiment measured, informing Phase 1 sizing"
+    ]
+  },
+  {
+    "id": "phase-1",
+    "name": "Scale",
+    "budgetUsd": 12000,
+    "status": "planned",
+    "summary": "Grow to 2-3 nodes and 12x 3090 with cheap used 25GbE+ interconnect. ~4 kW worst case.",
+    "goals": [
+      "288 GB VRAM across 3 nodes; tensor-parallel large models plus wide search fleets",
+      "Used ConnectX-4/5 NICs and a 25GbE+ switch from eBay",
+      "Avenue portfolio expanded to 6+ with automated result triage"
+    ],
+    "exitCriteria": [
+      "Multi-node inference stable under week-long runs",
+      "Power draw confirmed under 4.5 kW at the wall",
+      "A ranked list of avenues by evidence gathered, to focus Phase 2"
+    ]
+  },
+  {
+    "id": "phase-2",
+    "name": "Heavy",
+    "budgetUsd": 20000,
+    "status": "planned",
+    "summary": "Decision gate: used A100/6000-Ada class vs more 3090s vs next-gen. Industrial site if power demands it.",
+    "goals": [
+      "Pick hardware class from Phase 1 evidence, not speculation",
+      "If over the 5 kW envelope, execute the industrial-location move",
+      "Dedicated long-context model for proof-drafting and verification"
+    ],
+    "exitCriteria": [
+      "Sustained multi-week experiment campaigns on the strongest avenues",
+      "Published writeups of the machine and at least one research result"
+    ]
+  }
+]
