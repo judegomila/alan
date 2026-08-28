@@ -1,0 +1,16 @@
+{
+  "envelopeW": 5000,
+  "nodeOverheadW": 350,
+  "coolingOverheadW": 200,
+  "notes": [
+    "Envelope is 5 kW continuous: normal home service backed by 5 kW solar + battery.",
+    "GPUs run power-limited (nvidia-smi -pl): 3090 at 250 W loses ~4% throughput for ~30% less power.",
+    "If a phase needs more than the envelope, the machine moves to an industrial location — that is a planned exit, not a failure.",
+    "Battery smooths inference bursts; sustained draw is sized to solar + grid headroom."
+  ],
+  "thermalNotes": [
+    "Open-air frames, no cases: ambient extraction is the owner's home turf.",
+    "Used 3090s get fresh thermal pads on VRAM before entering service.",
+    "Exhaust heat is a feature in winter, a ducting problem in summer — duct design owned outside this app."
+  ]
+}

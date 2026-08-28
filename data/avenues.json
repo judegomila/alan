@@ -1,0 +1,66 @@
+[
+  {
+    "id": "hilbert-polya",
+    "name": "Hilbert–Pólya operator search",
+    "structure": "Find a self-adjoint operator whose spectrum matches the nontrivial zeta zeros; RH follows from self-adjointness.",
+    "approach": "proof-search",
+    "status": "active",
+    "models": ["large local reasoning model", "parallel 8-32B searchers"],
+    "links": [],
+    "notes": "AI generates candidate operator families (Berry–Keating variants, quantized maps); numerics screen spectra against known zeros."
+  },
+  {
+    "id": "weil-positivity",
+    "name": "Weil explicit-formula positivity",
+    "structure": "RH is equivalent to positivity of the Weil distribution on a class of test functions. Search test-function constructions that certify positivity.",
+    "approach": "proof-search",
+    "status": "active",
+    "models": ["large local reasoning model"],
+    "links": []
+  },
+  {
+    "id": "nyman-beurling",
+    "name": "Nyman–Beurling / Báez-Duarte criterion",
+    "structure": "RH iff the constant function is approximable in L2(0,1) by dilations of the fractional-part function. Optimize approximation coefficients numerically at scale.",
+    "approach": "numerical",
+    "status": "active",
+    "models": ["code-gen model driving GPU numerics"],
+    "links": []
+  },
+  {
+    "id": "li-coefficients",
+    "name": "Li coefficient positivity",
+    "structure": "RH iff Li's lambda_n >= 0 for all n. Compute deep lambda_n sequences; mine for structure predicting positivity.",
+    "approach": "numerical",
+    "status": "idea",
+    "models": ["code-gen model driving GPU numerics"],
+    "links": []
+  },
+  {
+    "id": "random-matrix-gue",
+    "name": "Random matrix / GUE statistics",
+    "structure": "Zero statistics match GUE eigenvalues (Montgomery–Odlyzko). Mine large zero datasets for deviations and new invariants suggesting the underlying operator.",
+    "approach": "conjecture-mining",
+    "status": "idea",
+    "models": ["embedding + pattern-mining models"],
+    "links": []
+  },
+  {
+    "id": "de-branges",
+    "name": "de Branges spaces program",
+    "structure": "RH from positivity conditions in de Branges' theory of Hilbert spaces of entire functions. AI audits and extends the known obstruction landscape.",
+    "approach": "proof-search",
+    "status": "idea",
+    "models": ["large local reasoning model"],
+    "links": []
+  },
+  {
+    "id": "explicit-formula-mining",
+    "name": "Explicit-formula conjecture mining",
+    "structure": "Generate and test thousands of candidate identities/inequalities relating primes and zeros; promote survivors to human review.",
+    "approach": "conjecture-mining",
+    "status": "idea",
+    "models": ["parallel 8-32B generators", "verifier models"],
+    "links": []
+  }
+]

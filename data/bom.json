@@ -1,0 +1,134 @@
+[
+  {
+    "id": "p0-cpu",
+    "phaseId": "phase-0",
+    "name": "AMD EPYC 7402 (24c/48t, used)",
+    "category": "cpu",
+    "qty": 1,
+    "targetPriceUsd": 250,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "notes": "Rome, 128 PCIe 4.0 lanes — one x16 per GPU, no bifurcation games."
+  },
+  {
+    "id": "p0-mobo",
+    "phaseId": "phase-0",
+    "name": "Supermicro H12SSL-i (SP3)",
+    "category": "motherboard",
+    "qty": 1,
+    "targetPriceUsd": 520,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "notes": "5x PCIe 4.0 x16 slots, IPMI for headless management."
+  },
+  {
+    "id": "p0-ram",
+    "phaseId": "phase-0",
+    "name": "256 GB DDR4-3200 ECC RDIMM (8x32 GB, used)",
+    "category": "memory",
+    "qty": 1,
+    "targetPriceUsd": 400,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "notes": "One DIMM per channel; room to double later."
+  },
+  {
+    "id": "p0-gpu-3090",
+    "phaseId": "phase-0",
+    "name": "NVIDIA RTX 3090 24 GB (used)",
+    "category": "gpu",
+    "qty": 4,
+    "targetPriceUsd": 750,
+    "paidPriceUsd": null,
+    "status": "watching",
+    "notes": "eBay sweet spot. Repad if mining-era. Power-limit to 250 W: ~4% perf loss, ~30% power saved.",
+    "gpu": {
+      "vramGb": 24,
+      "fp16Tflops": 35.6,
+      "tdpW": 350,
+      "powerLimitW": 250,
+      "memBandwidthGBs": 936
+    }
+  },
+  {
+    "id": "p0-nvme",
+    "phaseId": "phase-0",
+    "name": "2 TB NVMe SSD (model weights + results)",
+    "category": "storage",
+    "qty": 1,
+    "targetPriceUsd": 110,
+    "paidPriceUsd": null,
+    "status": "researching"
+  },
+  {
+    "id": "p0-psu",
+    "phaseId": "phase-0",
+    "name": "1600 W 80+ Titanium PSU (used, e.g. EVGA 1600 T2)",
+    "category": "psu",
+    "qty": 2,
+    "targetPriceUsd": 180,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "notes": "Two supplies: 2 GPUs each; add2psu-style sync board."
+  },
+  {
+    "id": "p0-frame",
+    "phaseId": "phase-0",
+    "name": "Open-air GPU frame + risers",
+    "category": "chassis",
+    "qty": 1,
+    "targetPriceUsd": 80,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "notes": "Open frame maximizes the thermal advantage we already have."
+  },
+  {
+    "id": "p1-gpu-3090",
+    "phaseId": "phase-1",
+    "name": "NVIDIA RTX 3090 24 GB (used)",
+    "category": "gpu",
+    "qty": 8,
+    "targetPriceUsd": 750,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "gpu": {
+      "vramGb": 24,
+      "fp16Tflops": 35.6,
+      "tdpW": 350,
+      "powerLimitW": 250,
+      "memBandwidthGBs": 936
+    }
+  },
+  {
+    "id": "p1-node-kit",
+    "phaseId": "phase-1",
+    "name": "EPYC node kit x2 (7402 + H12SSL-i + 256 GB + NVMe + PSUs)",
+    "category": "motherboard",
+    "qty": 2,
+    "targetPriceUsd": 1700,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "notes": "Repeat the Phase 0 node recipe twice."
+  },
+  {
+    "id": "p1-nics",
+    "phaseId": "phase-1",
+    "name": "Mellanox ConnectX-4 Lx 25GbE (used) x3 + DACs",
+    "category": "network",
+    "qty": 1,
+    "targetPriceUsd": 150,
+    "paidPriceUsd": null,
+    "status": "researching",
+    "notes": "eBay gold: ~$30/NIC. RDMA-capable for tensor parallel."
+  },
+  {
+    "id": "p1-switch",
+    "phaseId": "phase-1",
+    "name": "Mikrotik CRS510 / used 25GbE switch",
+    "category": "network",
+    "qty": 1,
+    "targetPriceUsd": 500,
+    "paidPriceUsd": null,
+    "status": "researching"
+  }
+]

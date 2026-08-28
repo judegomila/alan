@@ -1,0 +1,14 @@
+{
+  "updated": "2026-08-27",
+  "online": false,
+  "nodes": [
+    {
+      "id": "alan-0",
+      "name": "alan-0 (Phase 0 seed node)",
+      "status": "planned",
+      "gpus": 4,
+      "note": "EPYC 7402, 4x RTX 3090. Parts being sourced."
+    }
+  ],
+  "jobs": []
+}
