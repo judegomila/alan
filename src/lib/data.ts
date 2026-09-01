@@ -8,6 +8,7 @@ import {
   PartSchema,
   PhaseSchema,
   PowerConfigSchema,
+  StackSchema,
   WorkloadSchema,
 } from "./schemas";
 
@@ -27,3 +28,4 @@ export const getAvenues = () => loadJson("avenues.json", z.array(AvenueSchema));
 export const getClusterState = () => loadJson("cluster-state.json", ClusterStateSchema);
 export const getMission = () => loadJson("mission.json", MissionSchema);
 export const getWorkloads = () => loadJson("workloads.json", z.array(WorkloadSchema));
+export const getStack = () => loadJson("stack.json", StackSchema);
