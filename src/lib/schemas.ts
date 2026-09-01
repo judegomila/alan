@@ -128,6 +128,45 @@ export const MissionSchema = z.object({
   }),
 });
 
+export const StackSchema = z.object({
+  pools: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      vramGb: z.number().positive(),
+      note: z.string().optional(),
+    })
+  ),
+  models: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      kind: z.enum(["local", "external"]),
+      params: z.string(),
+      quant: z.string().optional(),
+      weightsGb: z.number().positive().nullable(),
+      role: z.string(),
+      runtime: z.string(),
+      license: z.string().optional(),
+      costNote: z.string().optional(),
+      link: z.string().url(),
+      status: z.enum(["planned", "testing", "deployed"]),
+      notes: z.string().optional(),
+    })
+  ),
+  layers: z.array(
+    z.object({
+      name: z.string(),
+      tech: z.string(),
+      runsOn: z.string(),
+      purpose: z.string(),
+    })
+  ),
+});
+
+export type Stack = z.infer<typeof StackSchema>;
+export type StackPool = Stack["pools"][number];
+export type StackModel = Stack["models"][number];
 export type Workload = z.infer<typeof WorkloadSchema>;
 export type Mission = z.infer<typeof MissionSchema>;
 export type Phase = z.infer<typeof PhaseSchema>;

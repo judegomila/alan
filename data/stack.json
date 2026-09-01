@@ -1,0 +1,161 @@
+{
+  "pools": [
+    { "id": "one-3090", "name": "one 3090", "vramGb": 24 },
+    { "id": "node", "name": "one node (4x 3090)", "vramGb": 96 },
+    { "id": "v100-box", "name": "V100 box (8x 32 GB, NVLink)", "vramGb": 256 },
+    { "id": "fleet", "name": "3090 fleet (12x)", "vramGb": 288, "note": "across 3 nodes, 25GbE" },
+    { "id": "everything", "name": "fleet + V100 box", "vramGb": 544, "note": "llama.cpp RPC, slow" }
+  ],
+  "models": [
+    {
+      "id": "deepseek-v4-flash",
+      "name": "DeepSeek V4 Flash",
+      "kind": "local",
+      "params": "284B MoE, 13B active",
+      "quant": "Q4_K_M GGUF / INT4",
+      "weightsGb": 160,
+      "role": "Route exhaustion & conjecture mining — the main 24/7 reasoner",
+      "runtime": "llama.cpp on the V100 box; vLLM pipeline-parallel across 2 nodes",
+      "license": "MIT",
+      "link": "https://huggingface.co/deepseek-ai",
+      "status": "planned",
+      "notes": "13B active params = ~8 GB read per token: MoE geometry that makes cheap VRAM fast. 1M context for whole-route prompts."
+    },
+    {
+      "id": "goedel-prover-v2-32b",
+      "name": "Goedel-Prover-V2 32B",
+      "kind": "local",
+      "params": "32B dense",
+      "quant": "AWQ INT4",
+      "weightsGb": 18,
+      "role": "Lean proof search — heavy prover",
+      "runtime": "vLLM, one instance per 3090, batched tactic search",
+      "license": "open weights",
+      "link": "https://huggingface.co/Goedel-LM",
+      "status": "planned",
+      "notes": "Near-frontier formal proving from a 32B model; every output kernel-verified."
+    },
+    {
+      "id": "deepseek-prover-v2-7b",
+      "name": "DeepSeek-Prover-V2 7B",
+      "kind": "local",
+      "params": "7B dense",
+      "quant": "FP16",
+      "weightsGb": 14,
+      "role": "Lean proof search — wide cheap swarm",
+      "runtime": "vLLM, many parallel streams per GPU",
+      "license": "open weights",
+      "link": "https://github.com/deepseek-ai/DeepSeek-Prover-V2",
+      "status": "planned"
+    },
+    {
+      "id": "qwen36-coder",
+      "name": "Qwen3.6 Coder (MoE)",
+      "kind": "local",
+      "params": "compact MoE",
+      "quant": "INT4",
+      "weightsGb": 20,
+      "role": "Numerics code-gen — CUDA kernels, arb/MPFR pipelines, experiment harnesses",
+      "runtime": "vLLM on 1-2x 3090",
+      "license": "Apache-2.0",
+      "link": "https://huggingface.co/Qwen",
+      "status": "planned"
+    },
+    {
+      "id": "qwen35-utility",
+      "name": "Qwen3.5 small + embeddings",
+      "kind": "local",
+      "params": "4-8B + embedding model",
+      "quant": "INT4",
+      "weightsGb": 6,
+      "role": "Triage, dedup, result classification, similarity search over findings",
+      "runtime": "vLLM on any spare 3090",
+      "license": "Apache-2.0",
+      "link": "https://huggingface.co/Qwen",
+      "status": "planned"
+    },
+    {
+      "id": "glm-53",
+      "name": "GLM-5.3",
+      "kind": "local",
+      "params": "744B",
+      "quant": "~Q3 GGUF",
+      "weightsGb": 300,
+      "role": "Big gun — overnight verdicts on the hardest surviving routes",
+      "runtime": "llama.cpp RPC spanning fleet + V100 box; single-digit tok/s",
+      "license": "open weights",
+      "link": "https://huggingface.co/zai-org",
+      "status": "planned",
+      "notes": "Current open-weight intelligence leader. Slow across the network — an overnight machine, not a chat partner."
+    },
+    {
+      "id": "aristotle",
+      "name": "Aristotle (Harmonic)",
+      "kind": "external",
+      "params": "hosted formal-proving system",
+      "weightsGb": null,
+      "role": "Lean 4 proof completion — submit files with open sorries, get kernel-verified completions",
+      "runtime": "HTTPS API (aristotle.harmonic.fun)",
+      "costNote": "free for now — $0 cloud exception; local prover swarm is the sovereign fallback if pricing changes",
+      "link": "https://aristotle.harmonic.fun/",
+      "status": "planned",
+      "notes": "IMO gold-equivalent (2025) with machine-verifiable Lean output. Route the hardest sorries here first while it costs nothing."
+    },
+    {
+      "id": "frontier-rigor",
+      "name": "Claude Fable 5 / Opus 5 (batch)",
+      "kind": "external",
+      "params": "frontier API",
+      "weightsGb": null,
+      "role": "Rigor layer — proof planning, §-level audits, avenue triage",
+      "runtime": "Anthropic API, budget-capped",
+      "costNote": "paid — a few hundred to ~$2k/month; only survivors from the local layers reach it",
+      "link": "https://www.anthropic.com/",
+      "status": "planned"
+    }
+  ],
+  "layers": [
+    {
+      "name": "1 · Orchestrator — the route runner",
+      "tech": "Python worker + Postgres job queue",
+      "runsOn": "alan-0 EPYC cores",
+      "purpose": "Pulls avenues from the improvement queue, fans experiments out across the serving layers, collects results, promotes survivors upward. The only custom software in the stack."
+    },
+    {
+      "name": "2 · Model gateway",
+      "tech": "LiteLLM (OpenAI-compatible router)",
+      "runsOn": "alan-0",
+      "purpose": "One endpoint for every model — local vLLM backends, llama.cpp, Aristotle, and the frontier API all behind the same interface, with per-avenue token accounting. Swapping a model is a config edit."
+    },
+    {
+      "name": "3 · Batch serving",
+      "tech": "vLLM, INT4 AWQ/GPTQ-Marlin",
+      "runsOn": "each 3090 node",
+      "purpose": "Continuous batching for the prover swarm, coder, and triage models. Ampere has no FP8 — INT4 Marlin is the format."
+    },
+    {
+      "name": "4 · Big-model serving",
+      "tech": "llama.cpp (GGUF; RPC mode to span machines)",
+      "runsOn": "V100 box",
+      "purpose": "Hosts DeepSeek V4 Flash fully in 256 GB of NVLinked HBM; RPC-spans the whole cluster for GLM-5.3 overnight runs. GGUF needs no BF16, so Volta's software sunset doesn't bite."
+    },
+    {
+      "name": "5 · Formal proving",
+      "tech": "Lean 4 + mathlib kernel checks; Aristotle API for the hardest sorries",
+      "runsOn": "EPYC cores (kernel) + prover swarm (layer 3) + Harmonic cloud (free)",
+      "purpose": "Every candidate proof is machine-checked — hallucination-proof by construction. Local swarm generates; the kernel judges; Aristotle closes what the swarm can't."
+    },
+    {
+      "name": "6 · Verified numerics",
+      "tech": "arb/MPFR interval arithmetic + CUDA FP64",
+      "runsOn": "V100 box (62 TFLOPS FP64) + EPYC cores",
+      "purpose": "Λ-bound and H_t corridor-certificate campaigns produce rigorous intervals, not floats. The reason the V100 box is in the BOM."
+    },
+    {
+      "name": "7 · State & telemetry",
+      "tech": "Postgres results store; nvidia-smi + IPMI exporters",
+      "runsOn": "alan-0",
+      "purpose": "Every experiment, proof, and certificate lands in one queryable store; exporters feed cluster-state.json and the Mission Control page. Thermal alarms pause the queue before hardware sees a critical temp."
+    }
+  ]
+}
