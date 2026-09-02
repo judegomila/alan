@@ -1,0 +1,39 @@
+---
+title: "First model tests: why qwen2.5-math:72b won't explore, and what will"
+date: "2026-09-02"
+tags: ["software", "models", "lessons"]
+---
+
+Started testing local models ahead of the build: DeepSeek and qwen2.5-math:72b.
+Two problems immediately: the model won't *explore* the actual math, and it's very
+slow. Both turned out to be diagnosable, and both reshaped the software plan.
+
+**Why it's slow.** A 72B dense model at Q4 is ~43 GB of weights. On any GPU under
+48 GB the runtime silently offloads layers to CPU, and every token pays a trip
+across the PCIe bus — throughput collapses 10–50×. The fix is a rule, now written
+into the stack: **a model must be fully VRAM-resident or it's the wrong model.**
+On a 24 GB card that means 32B INT4 max (Qwen3.5-32B reasoning is the current
+testbench pick). Big models are only affordable as MoE — DeepSeek V4 Flash is
+284B total but reads just ~8 GB per token — or on the V100 box's 256 GB.
+
+**Why it won't explore.** qwen2.5-math is an *answer machine*: instruct-tuned on
+competition problems to compress toward a final boxed answer. Ask it to wander and
+it pattern-matches to the nearest solved problem instead. No prompt fixes this,
+because exploration was never in the training objective. Exploration lives in the
+**harness**, not the model:
+
+1. **Propose** — N diverse samples per goal (pass@64, varied temperature), not one
+   careful chat.
+2. **Implement** — every idea becomes code or Lean, never prose.
+3. **Verify** — execution, the Lean kernel, or interval arithmetic. Never an LLM
+   grading an LLM.
+4. **Triage & promote** — survivors bubble up; the frontier layer only ever sees
+   verified artifacts.
+
+That loop is now specced as four pipelines on the Stack page: the falsify-first
+conjecture mill, the Lean treadmill (with Aristotle closing stuck sorries while
+it's free), the FP64 certificate factory, and the overnight verdict.
+
+The meta-lesson: we weren't testing a model, we were testing the absence of an
+orchestrator. The machine's job is to run the loop a million times a day; the
+model is just the propose step.

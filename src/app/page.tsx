@@ -61,8 +61,8 @@ export default function Home() {
         <Link href="/machine" className="rounded-md bg-amber-400 px-4 py-2 font-bold text-zinc-950 hover:bg-amber-300">
           The Machine
         </Link>
-        <Link href="/research" className="rounded-md border border-zinc-700 px-4 py-2 text-zinc-300 hover:border-zinc-500">
-          The Research
+        <Link href="/stack" className="rounded-md border border-zinc-700 px-4 py-2 text-zinc-300 hover:border-zinc-500">
+          The Stack
         </Link>
       </div>
     </div>

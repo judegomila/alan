@@ -75,6 +75,20 @@
       "status": "planned"
     },
     {
+      "id": "qwen35-32b-reasoning",
+      "name": "Qwen3.5 32B (reasoning)",
+      "kind": "local",
+      "params": "32B dense",
+      "quant": "INT4 AWQ",
+      "weightsGb": 18,
+      "role": "Interactive testbench — the model to use TODAY on a single 24 GB GPU while ALAN is built",
+      "runtime": "vLLM or llama.cpp, fully VRAM-resident — never offload",
+      "license": "Apache-2.0",
+      "link": "https://huggingface.co/Qwen",
+      "status": "testing",
+      "notes": "Replaces qwen2.5-math:72b in current tests: a 72B dense model on a 24 GB card offloads to CPU and crawls; a 32B reasoning model fully resident is 10-50x faster and actually explores."
+    },
+    {
       "id": "glm-53",
       "name": "GLM-5.3",
       "kind": "local",
@@ -156,6 +170,83 @@
       "tech": "Postgres results store; nvidia-smi + IPMI exporters",
       "runsOn": "alan-0",
       "purpose": "Every experiment, proof, and certificate lands in one queryable store; exporters feed cluster-state.json and the Mission Control page. Thermal alarms pause the queue before hardware sees a critical temp."
+    }
+  ],
+  "pipelines": [
+    {
+      "id": "conjecture-mill",
+      "title": "Falsify-first conjecture mill",
+      "stages": [
+        { "step": "Propose candidate identities, inequalities, or structures from a route card", "who": "DeepSeek V4 Flash, N parallel samples at diverse temperatures" },
+        { "step": "Implement each candidate as executable code (mpmath/Sage/CUDA)", "who": "Qwen3.6 Coder" },
+        { "step": "Execute against zero datasets and known constraints — try hard to break it", "who": "EPYC + 3090s, no LLM involved" },
+        { "step": "Triage survivors: dedup by embedding, cluster, rank by surprise", "who": "Qwen3.5 utility models" },
+        { "step": "Promote the top handful for deep review", "who": "frontier rigor layer" }
+      ],
+      "verifier": "numerical execution — a conjecture that fails once is dead, no debate",
+      "output": "a nightly ledger of surviving candidates with evidence attached"
+    },
+    {
+      "id": "lean-treadmill",
+      "title": "Lean formalization treadmill",
+      "stages": [
+        { "step": "Autoformalize route statements and lemma targets into Lean 4", "who": "DeepSeek V4 Flash" },
+        { "step": "Tree-search proofs: pass@64 tactic candidates per open goal", "who": "Goedel-Prover 32B + Prover 7B swarm on the 3090 fleet" },
+        { "step": "Kernel-check every candidate", "who": "Lean 4 + mathlib on EPYC cores" },
+        { "step": "Ship the stuck sorries out for completion", "who": "Aristotle API (free tier)" },
+        { "step": "Merge verified lemmas into the route's formal library", "who": "orchestrator, automatic" }
+      ],
+      "verifier": "the Lean kernel — hallucination is structurally impossible",
+      "output": "a growing mathlib-style library of machine-verified lemmas per route"
+    },
+    {
+      "id": "certificate-factory",
+      "title": "FP64 certificate factory",
+      "stages": [
+        { "step": "Spec an interval computation from a route card (Λ bounds, corridor checks)", "who": "human + frontier layer" },
+        { "step": "Write the arb/MPFR or CUDA FP64 kernel", "who": "Qwen3.6 Coder, human-reviewed once" },
+        { "step": "Run the campaign", "who": "V100 box (62 TFLOPS FP64) + EPYC" },
+        { "step": "Emit machine-checkable interval certificates", "who": "arb, deterministic" }
+      ],
+      "verifier": "interval arithmetic — outputs are rigorous enclosures, not floats",
+      "output": "certificate artifacts citable in a paper"
+    },
+    {
+      "id": "overnight-verdict",
+      "title": "Overnight verdict",
+      "stages": [
+        { "step": "Batch the hardest stuck questions with full route context (1M tokens)", "who": "orchestrator, end of day" },
+        { "step": "Deep single-stream reasoning runs while the house sleeps", "who": "GLM-5.3 spanned across everything, or frontier batch API" },
+        { "step": "Structured verdicts land in the morning review queue", "who": "orchestrator" }
+      ],
+      "verifier": "human — this is the one pipeline whose output is judgment, not artifacts",
+      "output": "morning briefing: kill / pivot / escalate per route"
+    }
+  ],
+  "rules": [
+    {
+      "rule": "Never trust prose math — only artifacts",
+      "why": "A model saying 'this holds' is noise. Code that ran, a proof the kernel checked, an interval that closed — those are signal. Every pipeline ends in a verifier that is not an LLM."
+    },
+    {
+      "rule": "Exploration is search, not chat",
+      "why": "One smart sample loses to 64 diverse samples plus a ruthless verifier. Budget pass@N per goal, not conversations. This is why instruct-tuned math models (qwen2.5-math-72b) feel dead: they compress toward one answer instead of fanning out."
+    },
+    {
+      "rule": "Models must be fully VRAM-resident",
+      "why": "A 72B dense model at Q4 is ~43 GB; on a 24 GB card the runtime silently offloads to CPU and throughput collapses 10-50x. On one 3090: 32B INT4 max. Big models only as MoE (V4 Flash: 284B total, 8 GB read per token) or on the V100 box."
+    },
+    {
+      "rule": "Answer-machines answer; reasoners explore; provers prove",
+      "why": "Three different tools. Math-instruct models for lookups, reasoning models (V4 Flash class) for generation and conjecture, prover models for Lean. Using one for another's job wastes electricity."
+    },
+    {
+      "rule": "The human files route cards, not prompts",
+      "why": "A route card = goal, known results, falsifiers to try, token budget. The orchestrator turns it into thousands of experiments. You review promoted survivors at breakfast, not chat logs at midnight."
+    },
+    {
+      "rule": "vLLM for fleets, llama.cpp for giants, never Ollama defaults for research load",
+      "why": "Continuous batching is where the 50-200x cost advantage lives. Ollama is fine for kicking tires; the mill runs on vLLM with explicit quant, context, and batch settings."
     }
   ]
 }

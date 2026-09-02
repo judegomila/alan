@@ -100,6 +100,53 @@ export default function StackPage() {
         </div>
       </Section>
 
+      <Section title="How ALAN explores math — the four pipelines">
+        <p className="mb-4 max-w-2xl text-sm text-zinc-400">
+          Chatting with a model does not explore mathematics — a loop does. Every pipeline below
+          fans a route card out into many parallel attempts and ends in a verifier that is not an
+          LLM. The model proposes; something ruthless disposes.
+        </p>
+        <div className="grid gap-4 md:grid-cols-2">
+          {stack.pipelines.map((pl) => (
+            <div key={pl.id} className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-5">
+              <h3 className="font-bold text-zinc-100">{pl.title}</h3>
+              <ol className="mt-3 space-y-2">
+                {pl.stages.map((s, i) => (
+                  <li key={i} className="flex gap-3 text-sm">
+                    <span className="font-mono text-xs text-amber-400">{i + 1}</span>
+                    <span>
+                      <span className="text-zinc-300">{s.step}</span>{" "}
+                      <span className="text-xs text-zinc-500">— {s.who}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <div className="mt-3 border-t border-zinc-800 pt-3 text-xs">
+                <div>
+                  <span className="text-zinc-500">verifier: </span>
+                  <span className="text-emerald-400">{pl.verifier}</span>
+                </div>
+                <div className="mt-1">
+                  <span className="text-zinc-500">output: </span>
+                  <span className="text-zinc-300">{pl.output}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Operating rules">
+        <div className="space-y-3">
+          {stack.rules.map((r) => (
+            <div key={r.rule} className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
+              <h3 className="text-sm font-bold text-amber-400">{r.rule}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-zinc-400">{r.why}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
       <Section title="Serving architecture">
         <div className="space-y-3">
           {stack.layers.map((l) => (
