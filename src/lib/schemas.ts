@@ -162,6 +162,16 @@ export const StackSchema = z.object({
       purpose: z.string(),
     })
   ),
+  pipelines: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      stages: z.array(z.object({ step: z.string(), who: z.string() })),
+      verifier: z.string(),
+      output: z.string(),
+    })
+  ),
+  rules: z.array(z.object({ rule: z.string(), why: z.string() })),
 });
 
 export type Stack = z.infer<typeof StackSchema>;
